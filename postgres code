@@ -1,0 +1,67 @@
+-- Criação dos tipos ENUM no PostgreSQL
+CREATE TYPE situacao_enum AS ENUM('ATIVO', 'INATIVO');
+CREATE TYPE situacao_lancamento_enum AS ENUM('PAGO', 'PENDENTE');
+
+-- Tabela: cliente
+CREATE TABLE cliente (
+    id SERIAL PRIMARY KEY,
+    nome_empresarial VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) NOT NULL,
+    ie VARCHAR(15),
+    email VARCHAR(255),
+    website VARCHAR(255),
+    telefone VARCHAR(15),
+    cep VARCHAR(9),
+    endereco VARCHAR(255),
+    numero VARCHAR(255),
+    complemento VARCHAR(255),
+    bairro VARCHAR(255),
+    cidade VARCHAR(255),
+    estado CHAR(2),
+    nota INTEGER,
+    situacao situacao_enum NOT NULL
+);
+
+-- Tabela: fornecedor
+CREATE TABLE fornecedor (
+    id SERIAL PRIMARY KEY,
+    nome_empresarial VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) NOT NULL,
+    ie VARCHAR(15),
+    email VARCHAR(255),
+    website VARCHAR(255),
+    telefone VARCHAR(15),
+    cep VARCHAR(9),
+    endereco VARCHAR(255),
+    numero VARCHAR(255),
+    complemento VARCHAR(255),
+    bairro VARCHAR(255),
+    cidade VARCHAR(255),
+    estado CHAR(2),
+    nota INTEGER,
+    situacao situacao_enum NOT NULL
+);
+
+-- Tabela: conta
+CREATE TABLE conta (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    agencia VARCHAR(255) NOT NULL,
+    conta_corrente VARCHAR(255) NOT NULL,
+    data_inclusao TIMESTAMP NOT NULL,
+    observacao TEXT,
+    situacao situacao_enum NOT NULL
+);
+
+-- Tabela: contato
+CREATE TABLE contato (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    departamento VARCHAR(255),
+    cpf VARCHAR(14) NOT NULL,
+    email VARCHAR(255),
+    telefone VARCHAR(15),
+    situacao situacao_enum NOT NULL,
+    id_cliente INTEGER NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES cliente (id)
+);
