@@ -65,3 +65,38 @@ CREATE TABLE contato (
     id_cliente INTEGER NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES cliente (id)
 );
+
+-- Tabela: categoria
+CREATE TABLE categoria (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    debito BOOLEAN,
+    credito BOOLEAN,
+    situacao situacao_enum NOT NULL,
+    id_pai INTEGER,
+    FOREIGN KEY (id_pai) REFERENCES categoria (id)
+);
+
+-- Tabela: lancamento
+CREATE TABLE lancamento (
+    id SERIAL PRIMARY KEY,
+    parcela INTEGER NOT NULL,
+    total_parcelas INTEGER NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    data_lancamento TIMESTAMP NOT NULL,
+    data_vencimento TIMESTAMP NOT NULL,
+    descricao TEXT,
+    situacao situacao_lancamento_enum NOT NULL,
+    id_conta INTEGER NOT NULL,
+    id_categoria INTEGER NOT NULL,
+    id_cliente INTEGER,
+    id_fornecedor INTEGER,
+    FOREIGN KEY (id_conta) REFERENCES conta (id),
+    FOREIGN KEY (id_categoria) REFERENCES categoria (id),
+    FOREIGN KEY (id_cliente) REFERENCES cliente (id),
+    FOREIGN KEY (id_fornecedor) REFERENCES fornecedor (id)
+);
+
+SELECT a.*, b.*
+FROM cliente a
+INNER JOIN contato b ON a.id = b.id_cliente
