@@ -123,3 +123,28 @@ SELECT a.*
 FROM categoria a
 INNER JOIN categoria b ON a.id_pai = b.id
 WHERE a.id_pai = 1
+
+--outra forma de combinar, usando SELECT (quando não tem chave estrangeira, por exemplo)
+SELECT cidade, estado FROM cliente
+UNION
+SELECT cidade, estado FROM fornecedor
+ORDER BY cidade, estado
+
+--mesma coisa do de cima, mas aparece repetição
+SELECT cidade, estado FROM cliente
+UNION ALL
+SELECT cidade, estado FROM fornecedor
+ORDER BY cidade, estado
+
+SELECT nome_empresarial AS "nome empresarial", cnpj, nota FROM cliente
+UNION ALL
+SELECT nome_empresarial AS "nome empresarial", cnpj, nota FROM fornecedor
+ORDER BY 1
+
+--Seleciona todos os clientes que estão no mesmo estado dos fornecedores que estão na cidade de 'Sorocaba'
+SELECT *
+FROM cliente
+WHERE estado IN (SELECT estado
+				FROM fornecedor
+				WHERE cidade = 'Sorocaba'
+				)
