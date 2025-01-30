@@ -97,6 +97,29 @@ CREATE TABLE lancamento (
     FOREIGN KEY (id_fornecedor) REFERENCES fornecedor (id)
 );
 
+--necessariamente precisa conter nas duas tabelas para aparecer com INNER JOIN
 SELECT a.*, b.*
 FROM cliente a
 INNER JOIN contato b ON a.id = b.id_cliente
+
+INSERT INTO cliente (id,nome_empresarial,cnpj,ie,email,website,telefone,cep,endereco,complemento,bairro,cidade,estado,nota,situacao)
+VALUES (11,'JRT Representações', '21.687.974/0001-88',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ATIVO')
+
+--Não precisa existir nas duas tabelas, somente na primeira (esquerda, tabela a), o where retorna somento o item com id 11, inserido acima
+SELECT a.*, b.*
+FROM cliente a
+LEFT JOIN contato b ON a.id = b.id_cliente
+WHERE a.id = 11
+
+--Não precisa existir nas duas tabelas, somente na segunda (direita, tabela b)
+--Não exibirá nada pois o id 11 só existe na tabela a
+SELECT a.*, b.*
+FROM cliente a
+RIGHT JOIN contato b ON a.id = b.id_cliente
+WHERE a.id = 11
+
+--"SELF JOIN" tá mostrando uma subcategoria do custo fixo, nesse caso. O aluguel faz parte do custo fixo e possui um id_pai de 1. Assim retorna todos os custos fixos que existem na tabela
+SELECT a.*
+FROM categoria a
+INNER JOIN categoria b ON a.id_pai = b.id
+WHERE a.id_pai = 1
