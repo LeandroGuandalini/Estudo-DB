@@ -148,3 +148,20 @@ WHERE estado IN (SELECT estado
 				FROM fornecedor
 				WHERE cidade = 'Sorocaba'
 				)
+
+--Selecao de clientes vips (nota 4 ou 5)
+SELECT nome_empresarial AS "CLientes VIPs", cnpj, email, website, telefone, cep, nota
+FROM cliente
+WHERE nota >= 4
+ORDER BY nota DESC
+
+--Resultado dos valores por cada banco
+SELECT 
+    a.nome, a.agencia, a.id, SUM(b.valor) AS total_valor, COUNT(b.total_parcelas) AS total_parcelas
+FROM 
+    conta a
+JOIN 
+    lancamento b ON a.id = b.id_conta
+GROUP BY 
+    a.nome, a.agencia, a.id;
+
